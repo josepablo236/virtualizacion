@@ -23,17 +23,10 @@ const NoSesion = () => {
         try {
             let response; 
 
-            //Si el refresh token existe, haz una llamada a refresh token, de lo contrario solicita un token
-            if(spotifyRefreshToken){
-                //Llamada
-                response = await spotifyAuthCall({refresh_token: spotifyRefreshToken, grant_type: 'refresh_token'});
-            }
-            else{
-                response = await spotifyAuthCall({code, grant_type: 'authorization_code' });
-            }
+            //Si el refresh token no existe, solicita un token
+            response = await spotifyAuthCall({ grant_type: 'client_credentials' });
 
             if(response.access_token){
-                history.replace("/login");
                 setSpotifyRefreshToken(response?.refresh_token);
                 setSpotifyTokenResponse(response);
                 setIsAuthenticated(true);
@@ -49,18 +42,28 @@ const NoSesion = () => {
         }
     },[setSpotifyRefreshToken, setSpotifyTokenResponse, setIsAuthenticated, spotifyRefreshToken]);
 
-    useEffect(()=>{
-        const urlParams = new URLSearchParams(location.search);
-        const spotifyCode = urlParams.get("code");
-        if(spotifyCode){
-            guardarCargando(true);
-            authenticateUser(spotifyCode);
-        }
-    },[location.search]);
 
     //Al hacer click en iniciar sesion
-    const handleLogin = () =>{
-        window.location.replace(spotifyUrl);
+    const handleLogin = async()=>{
+        let response; 
+
+        //Si el refresh token existe, haz una llamada a refresh token, de lo contrario solicita un token
+        if(spotifyRefreshToken){
+            //Llamada
+            response = await spotifyAuthCall({refresh_token: spotifyRefreshToken, grant_type: 'refresh_token'});
+        }
+        else{
+            response = await spotifyAuthCall({grant_type: 'client_credentials'});
+        }
+
+        if(response.access_token){
+            setSpotifyRefreshToken(response?.refresh_token);
+            setSpotifyTokenResponse(response);
+            setIsAuthenticated(true);
+        }
+        else{
+            throw new Error("Credenciales incorrectas en spotify app");
+        }
     }
 
     return ( 
@@ -76,7 +79,9 @@ const NoSesion = () => {
                 :
                 <Fragment>
                     <p className="subtitulo">Haz click aqui para iniciar sesión:</p>
-                    <Button onClick={handleLogin} variant="contained" size="large" startIcon={<Lock/>}>Iniciar sesión</Button>
+                    <Link to="/login">
+                        <Button onClick={handleLogin} variant="contained" size="large" startIcon={<Lock/>}>Iniciar sesión</Button>
+                    </Link>
                 </Fragment>
             }
         </Fragment>

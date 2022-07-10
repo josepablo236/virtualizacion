@@ -1,7 +1,6 @@
 import apiCall from "../api";
 
 const commonParams = {
-    redirect_uri: process.env.REACT_APP_SPOTIFY_CALLBACK_HOST,
     client_id: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
     client_secret: process.env.REACT_APP_SPOTIFY_CLIENT_SECRET
 };
@@ -15,12 +14,13 @@ export const spotifyAuthCall = async(requiredParams)=>{
             ...commonParams,
         };
         const searchParams = Object.keys(params).map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(params[key])).join("&");
-    
+
         const spotifyCall = await apiCall({
             method: 'POST',
             url: 'https://accounts.spotify.com/api/token',
             body: searchParams,
-            headers: {"Content-type": "application/x-www-form-urlencoded"}
+            headers: {"Content-type": "application/x-www-form-urlencoded",
+            'Authorization': 'Basic ' + (new Buffer(process.env.REACT_APP_SPOTIFY_CLIENT_ID + ':' + process.env.REACT_APP_SPOTIFY_CLIENT_SECRET).toString('base64'))}
         });
     
         return await spotifyCall.json();
