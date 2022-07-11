@@ -1,0 +1,17 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [{
+        "Sid": "VisualEditor1",
+        "Effect": "Allow",
+        "Action": [
+            "logs:CreateLogStream",
+            "logs:CreateLogGroup",
+            "logs:PutLogEvents",
+            "iam:PassRole",
+            "dynamodb:*",
+            "s3:*",
+            "rekognition:*"
+        ],
+        "Resource": "*"
+    }]
+}
