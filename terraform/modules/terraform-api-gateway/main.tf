@@ -27,21 +27,9 @@ resource "aws_api_gateway_api_key" "api-key" {
 
 resource "aws_api_gateway_deployment" "backend-deployment" {
   rest_api_id = aws_api_gateway_rest_api.backend-api.id
-  stage_name  = terraform.workspace 
+  stage_name  = terraform.workspace
 
   depends_on = [
-    aws_api_gateway_method.dashboard-get,
-    aws_api_gateway_method.dashboard-options,
-    aws_api_gateway_method.emociones-get,
-    aws_api_gateway_method.emociones-options,
-    aws_api_gateway_method.historial-get,
-    aws_api_gateway_method.historial-post,
-    aws_api_gateway_method.historial-options,
-    aws_api_gateway_method.retro-post,
-    aws_api_gateway_method.retro-options,
-    aws_api_gateway_method.users-get,
-    aws_api_gateway_method.users-post,
-    aws_api_gateway_method.users-options,
     aws_api_gateway_integration.integration-dashboard-get,
     aws_api_gateway_integration.integration-dashboard-options,
     aws_api_gateway_integration.integration-emociones-get,
@@ -381,7 +369,7 @@ resource "aws_api_gateway_integration" "integration-dashboard-get" {
   resource_id             = aws_api_gateway_resource.dashboard.id
   http_method             = aws_api_gateway_method.dashboard-get.http_method
   integration_http_method = "POST"
-  type                    = "AWS_PROXY"
+  type                    = "AWS"
   uri                     = var.lambda_dashboard
 
   depends_on = [
@@ -414,7 +402,7 @@ resource "aws_api_gateway_integration" "integration-emociones-get" {
   resource_id             = aws_api_gateway_resource.emociones.id
   http_method             = aws_api_gateway_method.emociones-get.http_method
   integration_http_method = "POST"
-  type                    = "AWS_PROXY"
+  type                    = "AWS"
   uri                     = var.lambda_historial
 
   depends_on = [
@@ -448,7 +436,7 @@ resource "aws_api_gateway_integration" "integration-historial-get" {
   resource_id             = aws_api_gateway_resource.historial.id
   http_method             = aws_api_gateway_method.historial-get.http_method
   integration_http_method = "POST"
-  type                    = "AWS_PROXY"
+  type                    = "AWS"
   uri                     = var.lambda_historial
 
   depends_on = [
@@ -461,7 +449,7 @@ resource "aws_api_gateway_integration" "integration-historial-post" {
   resource_id             = aws_api_gateway_resource.historial.id
   http_method             = aws_api_gateway_method.historial-post.http_method
   integration_http_method = "POST"
-  type                    = "AWS_PROXY"
+  type                    = "AWS"
   uri                     = var.lambda_historial
 
   depends_on = [
@@ -494,7 +482,7 @@ resource "aws_api_gateway_integration" "integration-retro-post" {
   resource_id             = aws_api_gateway_resource.retro.id
   http_method             = aws_api_gateway_method.retro-post.http_method
   integration_http_method = "POST"
-  type                    = "AWS_PROXY"
+  type                    = "AWS"
   uri                     = var.lambda_retro
 
   depends_on = [
@@ -527,7 +515,7 @@ resource "aws_api_gateway_integration" "integration-users-post" {
   resource_id             = aws_api_gateway_resource.users.id
   http_method             = aws_api_gateway_method.users-post.http_method
   integration_http_method = "POST"
-  type                    = "AWS_PROXY"
+  type                    = "AWS"
   uri                     = var.lambda_usuarios
 
   depends_on = [
@@ -540,7 +528,7 @@ resource "aws_api_gateway_integration" "integration-users-get" {
   resource_id             = aws_api_gateway_resource.users.id
   http_method             = aws_api_gateway_method.users-get.http_method
   integration_http_method = "POST"
-  type                    = "AWS_PROXY"
+  type                    = "AWS"
   uri                     = var.lambda_usuarios
 
   depends_on = [
@@ -605,7 +593,7 @@ resource "aws_api_gateway_integration" "integration-apr-post" {
   resource_id             = aws_api_gateway_resource.apr.id
   http_method             = aws_api_gateway_method.apr-post.http_method
   integration_http_method = "POST"
-  type                    = "AWS_PROXY"
+  type                    = "AWS"
   uri                     = var.lambda_apr
 }
 
@@ -614,7 +602,8 @@ resource "aws_api_gateway_deployment" "apr-deployment" {
   stage_name  = terraform.workspace
 
   depends_on = [
-    aws_api_gateway_method.apr-post
+    aws_api_gateway_method.apr-post,
+    aws_api_gateway_integration.integration-apr-post
   ]
 }
 
