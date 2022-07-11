@@ -85,11 +85,11 @@ export const getQuerySpotify = (emotionsArray) => {
     let result;
     switch (emotion) {
         case "CALM":
-            result = 'para bailar';
+            result = 'latino';
             break;
 
         case "SURPRISED":
-            result = 'happy surprised';
+            result = 'happier';
             break;
 
         case "FEAR":
@@ -97,11 +97,11 @@ export const getQuerySpotify = (emotionsArray) => {
             break;
     
         case "SAD":
-            result = 'buen animo';
+            result = 'feeling better';
             break;
 
         case "CONFUSED":
-            result = 'normal';
+            result = 'focus';
             break;
 
         case "DISGUSTED":
@@ -109,11 +109,11 @@ export const getQuerySpotify = (emotionsArray) => {
             break;
 
         case "ANGRY":
-            result = 'canciones tranquilas';
+            result = 'meditation happy';
             break;
 
         case "HAPPY":
-            result = 'happy happy songs';
+            result = 'feeling good';
         break;
         default:
             break;

@@ -16,7 +16,7 @@ const Resultado = () => {
     //Tiempo de carga
     setTimeout(()=>{
         guardarLoading(false);
-    }, 2000);
+    }, 3000);
 
     if(loading){
         return(

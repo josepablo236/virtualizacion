@@ -73,24 +73,33 @@ const Canciones = ({mensaje}) => {
                 type: 'track'
             },
             {
-                limit: 10
+                limit: 40
             },
             {
-                offset: 10
+                offset: 40
             }
         ];
         const response = await spotifySearchCall(paramsArray, spotifyTokenResponse.access_token);
-        if(response){
+        if(response?.tracks){
             guardarErrorCargar(false);
+            let numeros = [];
+            for (let index = 0; index < 10; index++) {
+                const num = Math.floor(Math.random() * 40);
+                numeros.push(num);
+            }
             let canciones = [];
-            response.tracks.items.map((item, index) => {
+            let tracks = [];
+            numeros.forEach(element => {
+                tracks.push(response.tracks.items[element]);
+            });
+            tracks.map((item, index) => {
                 let song = {
-                    id: item.id,
-                    name: item.name,
-                    artist: item.artists[0].name,
-                    releaseDate: item.album?.release_date,
-                    imageUrl: item.album?.images[0]?.url,
-                    externalUrl: item.external_urls?.spotify
+                    id: item?.id,
+                    name: item?.name,
+                    artist: item?.artists[0].name,
+                    releaseDate: item?.album?.release_date,
+                    imageUrl: item?.album?.images[0]?.url,
+                    externalUrl: item?.external_urls?.spotify
                 };
                 canciones.push(song);
             });
